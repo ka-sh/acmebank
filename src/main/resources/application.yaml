@@ -1,0 +1,6 @@
+management:
+  endpoints:
+    web:
+      base-path: /api
+      path-mapping:
+        health: status
