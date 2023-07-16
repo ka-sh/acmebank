@@ -10,7 +10,9 @@ Simple web demo project implemented with the following technologies:
 - Spring web
 
 ### How to run
-
+```bash
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
 ### Endpoints
 
 | Method | Endpoint                                 | Description                                 |
