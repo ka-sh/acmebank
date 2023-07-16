@@ -1,0 +1,8 @@
+CREATE SEQUENCE IF NOT EXISTS account_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE IF NOT EXISTS accounts (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    number CHAR(8) NOT NULL,
+    currency CHAR(3) NOT NULL,
+    balance BIGINT NOT NULL default 0
+    );

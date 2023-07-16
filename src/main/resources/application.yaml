@@ -1,6 +1,19 @@
+server:
+  servlet:
+    context-path: /api
+spring:
+  hibernate:
+    ddl-auto: none
+  datasource:
+    url: { DATABASE_URL }
+    username: { DATABASE_USERNAME }
+    password: { DATABASE_PASSWORD }
 management:
   endpoints:
     web:
-      base-path: /api
+      base-path: /
       path-mapping:
         health: status
+
+
+
