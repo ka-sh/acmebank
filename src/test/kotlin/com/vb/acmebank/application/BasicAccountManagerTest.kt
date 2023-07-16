@@ -11,9 +11,49 @@ import org.junit.jupiter.api.Assertions.*
 import java.math.BigDecimal
 
 class BasicAccountManagerTest {
-    /**
-     * 12345678, and 88888888
-     */
+
+    @Test
+    fun `Successfully Transfer amount between two existing accounts`() {
+        val fromAccountNumber = "12345678"
+        val toAccountNumber = "88888888"
+        val initialBalance = BigDecimal("100").setScale(2).unscaledValue().longValueExact()
+        val accountRepository = mockk<AccountJPARepository>()
+        /**
+         * Mockking
+         */
+        every { accountRepository.findByNumber(fromAccountNumber) } returns Account(
+            1,
+            fromAccountNumber,
+            initialBalance,
+            "HKD"
+        )
+        every { accountRepository.findByNumber(toAccountNumber) } returns Account(
+            2,
+            toAccountNumber,
+            initialBalance,
+            "HKD"
+        )
+        every { accountRepository.save(any()) } answers { firstArg() }
+
+        val accountManager = BasicAccountManager(accountRepository)
+        accountManager.transfer(fromAccountNumber, toAccountNumber, BigDecimal("100"), "HKD")
+
+        verify { accountRepository.findByNumber(fromAccountNumber) }
+        verify { accountRepository.findByNumber(toAccountNumber) }
+        verify(exactly = 2) { accountRepository.save(any()) }
+        verify { accountRepository.save(match { it.number == fromAccountNumber && it.balance == 0L }) }
+        verify { accountRepository.save(match { it.number == toAccountNumber && it.balance == 20000L }) }
+    }
+    @Test
+    fun `Fails to transfer if source and destination accounts are the same`(){
+        val fromAccountNumber = "12345678"
+        val toAccountNumber = "12345678"
+        val accountRepository = mockk<AccountJPARepository>()
+        val accountManager = BasicAccountManager(accountRepository)
+        assertThrows(IllegalArgumentException::class.java) {
+            accountManager.transfer(fromAccountNumber, toAccountNumber, BigDecimal("100"), "HKD")
+        }
+    }
 
     @Test
     fun `Successfully fetch balance of an existing account`() {
