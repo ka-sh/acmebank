@@ -5,9 +5,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.math.BigDecimal
 
+//TODO:Refactor Account Entity to use none Data classes
 @Entity
 @Table(name = "accounts")
 data class Account(
@@ -19,6 +21,10 @@ data class Account(
     val number: String,
     val balance: Long,
     val currency: String,
+    @OneToMany(mappedBy = "from")
+    val outgoingTransactions:List<Transaction> = emptyList(),
+    @OneToMany(mappedBy = "to")
+    val incomingTransactions:List<Transaction> = emptyList()
 ) {
     companion object {
         private const val SCALE = 2

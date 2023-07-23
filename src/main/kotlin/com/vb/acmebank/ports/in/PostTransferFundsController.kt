@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 
 @RestController
@@ -24,7 +25,8 @@ class PostTransferFundsController(
             from = request.from!!,
             to = request.to!!,
             amount = request.amount!!,
-            currency = request.currency!!
+            currency = request.currency!!,
+            reference = UUID.fromString(request.reference!!)
         )
         return ResponseEntity.ok(TransferResponse("Success", "Transfer completed"))
     }

@@ -20,5 +20,9 @@ data class TransferRequest(
     @field:NotNull(message = "Amount is required")
     @field:DecimalMin(value = "0.01", message = "Amount must be greater than zero")
     @field:Digits(integer = 10, fraction = 2, message = "Amount cannot have more than 2 decimal places")
-    val amount: BigDecimal?
+    val amount: BigDecimal?,
+
+    @field:NotBlank(message = "Reference is required")
+    @field:Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", message = "Reference must be a valid UUID")
+    val reference: String?
 )
